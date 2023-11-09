@@ -1,33 +1,32 @@
 // playersController.js
 const Player = require('../models/playerModel');
 
-// POST /players
-// Creates a new entry for a player.
+// Example controller functions
 const createPlayer = async (req, res) => {
     try {
-        const { name, country, score } = req.body;
-        const player = new Player({ name, country, score });
+        const { name, country, score, rank } = req.body;
+        const player = new Player({ name, country, score, rank });
         await player.save();
         res.status(201).json(player);
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error.message });
     }
 };
 
-// PUT /players/:id
-// Updates the player attributes. Only name and score can be updated.
 const updatePlayer = async (req, res) => {
     try {
         const { name, score } = req.body;
-        const player = await Player.findByIdAndUpdate(req.params.id, { name, score }, { new: true });
+        const player = await Player.findByIdAndUpdate(
+            req.params.id,
+            { name, score },
+            { new: true }
+        );
         res.json(player);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
-// DELETE /players/:id
-// Deletes the player entry.
 const deletePlayer = async (req, res) => {
     try {
         await Player.findByIdAndDelete(req.params.id);
@@ -37,19 +36,15 @@ const deletePlayer = async (req, res) => {
     }
 };
 
-// GET /players
-// Displays the list of all players in descending order.
 const getAllPlayers = async (req, res) => {
     try {
-        const players = await Player.find().sort({ score: -1 });
+        const players = await Player.find().sort({ rank: -1 });
         res.json(players);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
-// GET /players/rank/:val
-// Fetches the player ranked “val”.
 const getRankedPlayer = async (req, res) => {
     try {
         const player = await Player.findOne({ rank: req.params.val });
@@ -59,8 +54,6 @@ const getRankedPlayer = async (req, res) => {
     }
 };
 
-// GET /players/random
-// Fetches a random player.
 const getRandomPlayer = async (req, res) => {
     try {
         const count = await Player.countDocuments();

@@ -1,4 +1,4 @@
-
+// index.js
 const express = require('express');
 const playersRoutes = require('./routes/playersRoutes');
 const connectDB = require('./config/database');
@@ -8,10 +8,9 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 
 
-app.use(express.json()); 
-
-
+app.use(express.json());
 app.use('/', playersRoutes);
+
 connectDB();
 
 app.listen(port, () => {
