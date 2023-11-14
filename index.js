@@ -6,7 +6,7 @@ const app = express();
 const dotenv = require("dotenv");
 const errorMiddleware = require("./middlewares/error");
 dotenv.config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 process.on("unhandledRejection", (err) => {
     console.log(`Error: ${err.message}`);
     console.log(`Shutting down the server due to Unhandled Promise Rejection`);
